@@ -1,0 +1,11 @@
+# Syntax Coloring Map For SpiShiftRegisterChain
+
+# Datatypes (KEYWORD1)
+SpiShiftRegisterChain    KEYWORD1
+
+# Methods and Functions (KEYWORD2)
+setBitOff KEYWORD2
+setBitOn KEYWORD2
+setDataToZeros KEYWORD2
+toggleBit KEYWORD2
+writeData KEYWORD2
