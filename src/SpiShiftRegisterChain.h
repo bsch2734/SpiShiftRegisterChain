@@ -11,10 +11,11 @@
 
 class SpiShiftRegisterChain {
 public: // constructor/ destructor
-	SpiShiftRegisterChain(unsigned int latchPin, unsigned int dataLengthBytes);
+	SpiShiftRegisterChain(unsigned int latchPin, unsigned int dataLengthBytes, unsigned int maxClockSpeed = 4000000);
 	~SpiShiftRegisterChain();
 
 public: // functions
+	void maxClockSpeed(unsigned int maxClockSpeed);
 	void setBitOff(unsigned int bitNumber, bool writeData = true);
 	void setBitOn(unsigned int bitNumber, bool writeData = true);
 	void setDataToZeros();
@@ -23,10 +24,12 @@ public: // functions
 
 private: // functions
 	void allocateMemory();
-	void setPinModes() const;
+	void initPins() const;
 
 private: // variables
+	uint8_t _bitOrder = LSBFIRST;
 	byte* _dataArray;
+	uint8_t _dataMode = SPI_MODE0;
 	unsigned int _dataLengthBytes;
 	unsigned int _latchPin;
 	SPISettings _spiSettings;

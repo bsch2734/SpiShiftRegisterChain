@@ -4,13 +4,13 @@
 // 
 // public constructor/ destructor
 // 
-SpiShiftRegisterChain::SpiShiftRegisterChain(unsigned int latchPin, unsigned int dataLengthBytes) :
+SpiShiftRegisterChain::SpiShiftRegisterChain(unsigned int latchPin, unsigned int dataLengthBytes, unsigned int maxClockSpeed /*= 4000000*/) :
 	_latchPin(latchPin),
 	_dataLengthBytes(dataLengthBytes),
-	_spiSettings(4000000, LSBFIRST, SPI_MODE0),
+	_spiSettings(maxClockSpeed, _bitOrder, _dataMode),
 	_dataArray(0)
 {
-	setPinModes();
+	initPins();
 	allocateMemory();
 	setDataToZeros();
 }
@@ -24,6 +24,10 @@ SpiShiftRegisterChain::~SpiShiftRegisterChain() {
 //
 // public functions
 //
+void SpiShiftRegisterChain::maxClockSpeed(unsigned int maxClockSpeed) {
+	_spiSettings = SPISettings(maxClockSpeed, _bitOrder, _dataMode);
+}
+
 void SpiShiftRegisterChain::setBitOff(unsigned int bitNumber, bool writeData/*= true*/){
 	_dataArray[bitNumber / 8] &= ~(0b10000000 >> (bitNumber % 8));
 	if (writeData)
@@ -69,6 +73,7 @@ void SpiShiftRegisterChain::allocateMemory() {
 	_dataArray = new byte[max(4, _dataLengthBytes)];
 }
 
-void SpiShiftRegisterChain::setPinModes() const {
+void SpiShiftRegisterChain::initPins() const {
 	pinMode(_latchPin, OUTPUT);
+	digitalWrite(_latchPin, HIGH);
 }
