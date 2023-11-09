@@ -11,7 +11,7 @@
 
 class SpiShiftRegisterChain {
 public: // constructor/ destructor
-	SpiShiftRegisterChain(unsigned int latchPin, unsigned int dataLengthBytes, unsigned int maxClockSpeed = 4000000);
+	SpiShiftRegisterChain(unsigned int latchPin, unsigned int dataLengthBytes, unsigned long maxClockSpeed = 4000000);
 	~SpiShiftRegisterChain();
 
 public: // functions

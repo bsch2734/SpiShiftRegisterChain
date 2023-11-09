@@ -4,7 +4,7 @@
 // 
 // public constructor/ destructor
 // 
-SpiShiftRegisterChain::SpiShiftRegisterChain(unsigned int latchPin, unsigned int dataLengthBytes, unsigned int maxClockSpeed /*= 4000000*/) :
+SpiShiftRegisterChain::SpiShiftRegisterChain(unsigned int latchPin, unsigned int dataLengthBytes, unsigned long maxClockSpeed /*= 4000000*/) :
 	_latchPin(latchPin),
 	_dataLengthBytes(dataLengthBytes),
 	_spiSettings(maxClockSpeed, _bitOrder, _dataMode),
