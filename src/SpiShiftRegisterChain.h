@@ -16,6 +16,7 @@ public: // constructor/ destructor
 
 public: // functions
 	void maxClockSpeed(unsigned int maxClockSpeed);
+	void setActiveState(bool activeState);
 	void setBitOff(unsigned int bitNumber, bool writeData = true);
 	void setBitOn(unsigned int bitNumber, bool writeData = true);
 	void setDataToZeros();
@@ -30,6 +31,7 @@ private: // variables
 	uint8_t _bitOrder = LSBFIRST;
 	byte* _dataArray;
 	uint8_t _dataMode = SPI_MODE0;
+	bool _activeState = LOW;
 	unsigned int _dataLengthBytes;
 	unsigned int _latchPin;
 	SPISettings _spiSettings;

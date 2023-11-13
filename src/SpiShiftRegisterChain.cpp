@@ -28,6 +28,11 @@ void SpiShiftRegisterChain::maxClockSpeed(unsigned int maxClockSpeed) {
 	_spiSettings = SPISettings(maxClockSpeed, _bitOrder, _dataMode);
 }
 
+void SpiShiftRegisterChain::setActiveState(bool activeState) {
+	_activeState = activeState;
+	initPins();
+}
+
 void SpiShiftRegisterChain::setBitOff(unsigned int bitNumber, bool writeData/*= true*/){
 	_dataArray[bitNumber / 8] &= ~(0b10000000 >> (bitNumber % 8));
 	if (writeData)
@@ -53,12 +58,12 @@ void SpiShiftRegisterChain::toggleBit(unsigned int bitNumber, bool writeData/*= 
 
 void SpiShiftRegisterChain::writeData() const {
 	SPI.beginTransaction(_spiSettings);
-	digitalWrite(_latchPin, LOW);
+	digitalWrite(_latchPin, _activeState);
 
 	for (int i = _dataLengthBytes - 1; i >= 0; i--)
 		SPI.transfer(_dataArray[i]);
 
-	digitalWrite(_latchPin, HIGH);
+	digitalWrite(_latchPin, !_activeState);
 	SPI.endTransaction();
 }
 
@@ -75,5 +80,5 @@ void SpiShiftRegisterChain::allocateMemory() {
 
 void SpiShiftRegisterChain::initPins() const {
 	pinMode(_latchPin, OUTPUT);
-	digitalWrite(_latchPin, HIGH);
+	digitalWrite(_latchPin, !_activeState);
 }
