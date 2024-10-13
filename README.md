@@ -9,7 +9,7 @@
 ## Features
 
 - Simple and efficient control of 595-style shift registers
-- Supports chaining of any length with any amount of bits per register
+- Supports chaining of any quantity of shift registers, with any amount of bits per register
 - Allows toggling individual bits, setting bits on or off, and clearing data
 - Control multiple chains by using multiple `SpiShiftRegisterChain` objects
 - Adjustable SPI clock speed for compatibility and performance tuning
@@ -41,6 +41,8 @@ To begin using the `SpiShiftRegisterChain` library after installing it, include 
 // Define latch pin and number of bytes for shift register chain
 const int latchPin = 10;
 const int dataLengthBytes = 4;  // Example: 4 bytes for 32 output bits (4 * 8)
+// # can you explain where 8 comes from? I do not know.                     ^
+// # future david here, 8 is bytes, but I think you should still explain it.
 
 SpiShiftRegisterChain shiftRegister(latchPin, dataLengthBytes);
 
@@ -59,7 +61,7 @@ Before using the shift register you must call `SPI.begin()` or the SPI bus will 
 
 1. **Setting Individual Bits On/Off**:
    
-   The library keeps an internal representation of the data which you manipulate before writing it out to the hardware. By default, data is written immediately when you call a data function such as `setBitOn()`. If you want to batch changes, set the second parameter of the data function to `false`. Then, later, call `writeData()` manually when you're ready to apply the changes to the hardware. This allows you to change any number of bits at exactly the same time.
+   The library keeps an internal representation of the data which you manipulate before writing it out to the hardware. By default, data is written immediately when you call a data function such as `setBitOn()`. If you want to batch changes, set the second parameter of the data functions to `false`. Then, later, call `writeData()` manually when you're ready to apply the changes to the hardware. This allows you to change any number of bits at exactly the same time.
 
    ```cpp
    shiftRegister.setBitOn(3);         // Turns on bit 3 and writes the data to the hardware
@@ -81,11 +83,11 @@ Before using the shift register you must call `SPI.begin()` or the SPI bus will 
    shiftRegister.setBitOn(8, false);
    shiftRegister.toggleBit(6);
    ```
-
+  // # while it is good that you have documented the following above, I do think this is a confusing feature, and may be something you should consider removing in the future. 
 2. **Toggling a Bit**:
 
-   Toggling will change a bit's state from false to true or true to false as required. The toggle function works the same way as the on/ off functions, automatically writing data unless `false` is specified as the second parameter.
-
+   Toggling will change a bit's state from false to true or true to false as required. The toggle function works the same way as the on/off functions, automatically writing data unless `false` is specified as the second parameter.
+  // # hopefully this is obvious, but what if true^ is written?
    ```cpp
    shiftRegister.toggleBit(3);   // Toggles the state of the 4th bit and writes the data
    ```
@@ -143,8 +145,8 @@ For each additional shift register in the chain:
 ## API Reference
 
 - **Constructor**: `SpiShiftRegisterChain(unsigned int latchPin, unsigned int dataLengthBytes, unsigned long maxClockSpeed = 4000000);`
-  - `latchPin`: The digital pin used to tell the shift register new data is coming.
-  - `dataLengthBytes`: The number of bytes (8-bit groups) in the shift register chain.
+  - `latchPin`: Required. The digital pin used to tell the shift register new data is coming.
+  - `dataLengthBytes`: Required. The number of bytes (8-bit groups) in the shift register chain.
   - `maxClockSpeed`: Optional. Sets the maximum SPI clock speed (default is 4 MHz).
 - **Destructor**: `~SpiShiftRegisterChain()`
   - Deallocates any memory used by the library.
