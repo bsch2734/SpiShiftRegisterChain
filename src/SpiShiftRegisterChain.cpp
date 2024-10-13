@@ -28,6 +28,10 @@ void SpiShiftRegisterChain::maxClockSpeed(unsigned int maxClockSpeed) {
 	_spiSettings = SPISettings(maxClockSpeed, _bitOrder, _dataMode);
 }
 
+void SpiShiftRegisterChain::setDefaultWriteState(bool writeDataState) {
+	_defaultWriteDataState = writeDataState;
+}
+
 void SpiShiftRegisterChain::setActiveState(bool activeState) {
 	_activeState = activeState;
 	initPins();
