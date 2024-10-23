@@ -75,7 +75,7 @@ void SpiShiftRegisterChain::allocateMemory() {
 	if (_dataArray)
 		delete[] _dataArray;
 
-	_dataArray = new byte[max(4, _dataLengthBytes)];
+	_dataArray = new byte[max(4u, _dataLengthBytes)];
 }
 
 void SpiShiftRegisterChain::initPins() const {
